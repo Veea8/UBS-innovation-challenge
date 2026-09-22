@@ -1,4 +1,4 @@
-# TRACE — Ticket Risk & Cause Engine
+# Data Summarization
 
 **UBS Hackathon · Scenario 1 — Ticket Intelligence and Theme Detection**
 
@@ -66,3 +66,77 @@ before it reaches the screen. Problems we have seen before are matched against a
 category catalog and can be automated. Problems we have not seen are capped below the
 automation threshold, and the model is not permitted to state a cause for them at all —
 it shows the pattern and hands it to a human expert.
+
+## Synthetic test data summary
+
+The repo includes a deterministic synthetic dataset designed for a root-cause and theme-detection demo. It is intended to simulate a realistic 90-day operational ticket stream and a matching change log.
+
+### Dataset composition
+
+- Tickets: 1,401
+- Themes: 11
+- Change records: 40
+- Time window: 90 days ending 2026-09-22
+- Signal mix: 3 planted root-cause themes + 7 background themes + unclustered singletons
+
+### Planted themes
+
+| Theme | Approx. tickets | Purpose |
+|---|---:|---|
+| `mobile_login_failure_v42` | 258 | Primary hero story: login issues after the mobile roll-out |
+| `apac_fx_settlement_recurrence` | 42 | Recurring APAC FX mismatch pattern across 3 episodes |
+| `iban_validation_vendor_regression` | 11 | Novel, low-volume Austrian IBAN validation issue |
+| `password_reset` | 230 | Common background issue |
+| `statement_download` | 150 | Common background issue |
+| `card_blocked_abroad` | 140 | Common travel-related background issue |
+| `reporting_slow_month_end` | 120 | Monthly operational reporting delay |
+| `onboarding_upload` | 110 | Document upload problem |
+| `payment_limits` | 130 | Beneficiary / limit query issue |
+| `branch_hardware` | 95 | Branch device / printer issue |
+| `singleton` | 115 | Genuine one-off tickets that should not cluster |
+
+This keeps the primary story dominant while still preserving realistic noise, decoys, and unclustered edge cases. The ordering matters: S1 is the largest single theme and S3 is the smallest.
+
+### Ticket attributes
+
+Each ticket in [data/tickets.json](data/tickets.json) follows the contract in [docs/SCHEMA.md](docs/SCHEMA.md):
+
+- `ticket_id`: unique incident ID in `INC-` format
+- `created_at`: UTC timestamp in ISO 8601 `Z` form
+- `channel`: contact channel such as `phone`, `email`, `chat`, `monitoring`, or `branch`
+- `region`: `CH`, `EMEA`, `APAC`, or `AMER`
+- `business_line`: `Retail`, `Wealth`, `InvestmentBank`, or `Operations`
+- `system`: operational system such as `MobileApp`, `eBanking`, `FX-Trading`, `Payments`, `CardServices`, `Onboarding`, or `Reporting`
+- `title`: short human-written ticket summary
+- `description`: 1–4 sentence human description of the issue
+- `reporter_role`: `client`, `client_advisor`, `internal_ops`, or `monitoring_bot`
+- `severity_reported`: integer from 1 to 5, where higher means more severe
+- `status`: `open`, `in_progress`, `resolved`, or `closed`
+- `resolution_notes`: non-null when the ticket has been resolved or closed
+- `linked_change_id`: a reference to a change in the change log, or `null`
+- `_gt_theme`: hidden ground-truth label used only for evaluation and not for clustering or prompting
+
+### Change attributes
+
+Each record in [data/changes.json](data/changes.json) follows the deployment/change schema:
+
+- `change_id`: change identifier in `CHG-` format
+- `deployed_at`: deploy timestamp in UTC ISO 8601 form
+- `system`: affected system
+- `title`: real-world sounding change title
+- `type`: one of `release`, `config`, `infra`, `vendor`, or `certificate`
+- `regions`: list of impacted regions
+- `owner_team`: owning team or support group
+- `rollback_at`: rollback timestamp or `null`
+
+### Why this dataset is useful
+
+This synthetic dataset is designed to force a robust root-cause workflow:
+
+- the main story is not labelled directly for every ticket
+- the change log contains decoys and nearby innocent changes
+- background noise is realistic and overlaps semantically with the signal themes
+- the novel IBAN theme is intentionally hard for keyword-based clustering
+- the singleton bucket ensures the system does not force every ticket into a cluster
+
+In practice, this makes the dataset useful for evaluating trend detection, clustering quality, root-cause correlation, and human-review triage decisions.
