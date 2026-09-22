@@ -31,6 +31,3 @@ The suite demonstrates the intended grounding behavior:
 - weak, mixed data is not collapsed into one fabricated incident;
 - every scenario is checked for source-only identifiers and absence of external or ground-truth inputs.
 
-## Important limitation
-
-These tests validate the deterministic evidence boundary. They do not prove causation. If an LLM is added later, its output needs a second validator that checks every ticket ID, change ID, system, region, date, quote, and cause against the evidence pack produced by the script.
