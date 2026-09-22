@@ -1,0 +1,1 @@
+"""UBS Innovation Challenge package."""
