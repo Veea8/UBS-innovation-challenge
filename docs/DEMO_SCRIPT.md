@@ -5,7 +5,7 @@ Owned by **Lane D**, confirmed against the real app at T+2:15.
 **Two roles.** One person *drives* (clicks, says nothing). One person *narrates*. Trying
 to do both is why teams overrun.
 
-Setup before you walk up: app already running, `APERTUS_MODE=cache_only`, browser at the
+Setup before you walk up: app already running, `LLM_MODE=cache_only`, browser at the
 **Raw** tab, zoom at 125%, notifications off, sidebar collapsed.
 
 ---
@@ -15,12 +15,12 @@ Setup before you walk up: app already running, `APERTUS_MODE=cache_only`, browse
 | Time | Screen | Narration |
 |---|---|---|
 | **0:00–0:20** | **Raw tab.** 1,400 rows. Scroll once, fast. | "This is a Monday morning in operational risk. Fourteen hundred tickets, ninety days. Somewhere in here are the four things that actually matter. Today, finding them is manual, and it takes days." |
-| **0:20–0:40** | Click **Themes**. Eight ranked cards appear. | "TRACE collapses that into eight themes, ranked by risk. Clustering is deterministic — no AI yet, and no AI needed. That's eighty percent of the volume handled for free." |
+| **0:20–0:40** | Click **Themes**. Eight ranked cards appear. | "TRACE collapses that into eight themes, ranked by risk. Clustering is deterministic — no AI yet, and none needed. That's eighty percent of the volume handled for free. Everything you'll see is synthetic data with storylines we planted, so we know what the right answers are." |
 | **0:40–1:15** | Open the top card. Timeline with the spike and the **deploy marker**. | "Top of the board: mobile login failures. Onset here — and this marker is a change record. Mobile App 4.2.0, new auth SDK, deployed three hours earlier. We didn't ask an AI to guess that; we time-correlated it against the change log and handed the AI a shortlist." |
-| **1:15–1:45** | Scroll to the **score breakdown bar**, then root cause + evidence. | "The score isn't a black box — it decomposes. Sharp trend, brand new, crossing two systems. Below it, the root cause, the contributing factors, and the evidence it used: the correlation, thirty-one tickets naming the change, and the client's own words." |
+| **1:15–1:45** | Scroll to the **score breakdown bar**, then root cause + evidence. Point at the **✓ grounded** badge. | "The score isn't a black box — it decomposes. Sharp trend, brand new, crossing two systems. Below it, the cause, the contributing factors, and the evidence: the correlation, thirty-one tickets naming that change, and the client's own words — quoted verbatim, because we substring-check every quote against the source ticket." |
 | **1:45–2:10** | Back to Themes, open the **APAC FX** theme. Recurrence strip. | "Second one is different. Smaller, but it's the third time in ninety days — and each time it was closed with the same manual re-sync. That's not an incident, that's a control failure. Volume alone would never have surfaced it; recurrence does." |
-| **2:10–2:35** | Open the **IBAN** theme, badged **AI-DETECTED**. | "And this one the rules missed entirely. Eleven tickets in nine days, no shared keyword, eleven different ways of describing the same thing. Deterministic clustering left them as noise. Apertus read them and found the pattern: a payments vendor library rejecting valid Austrian IBANs. Nobody had connected them." |
-| **2:35–2:50** | Triage panel → **Confirm**. Flash the **AI Audit** tab. | "No playbook covers this, so it goes to a human — with the evidence pack already built. Every AI call is logged, prompt and response. Nothing here is unexplained." |
+| **2:10–2:35** | Open the **IBAN** theme, badged **UNKNOWN** and **AI-DETECTED**. | "And this one the rules missed entirely. Eleven tickets in nine days, no shared keyword, eleven different ways of describing the same thing. Clustering left them as noise; the model read them and found the pattern. But look what it does *not* say — it matches no category we've seen before, so it isn't allowed to give you a cause. It says: here's a pattern, I don't know why, a human needs this." |
+| **2:35–2:50** | Triage panel → **Confirm**. Flash the **AI Audit** tab, point at the grounding row. | "Unseen goes to a human expert, always — with the evidence pack already built. And every claim on that screen was checked back against the source data before it rendered: every ticket id, every change, every quote. Nothing here is unexplained, and nothing is unverified." |
 | **2:50–3:00** | **Impact** tab. | "Fourteen hundred tickets to eight themes. Sixty-two percent auto-triaged. Time to spot the pattern: four days to six minutes. Twenty AI calls for the whole run — that number doesn't grow with ticket volume." |
 
 ---
@@ -31,8 +31,10 @@ Setup before you walk up: app already running, `APERTUS_MODE=cache_only`, browse
   design lands as a *reason the demo worked*, not as a preamble.
 - **The 0:20 cut is the whole pitch.** Raw table → ranked themes, one click. Rehearse that
   transition until it is instant. If the pipeline needs to run, pre-run it.
-- **Say "we planted these storylines in synthetic data" once**, early — around 0:20 works.
-  Better volunteered than extracted in Q&A.
+- **Say "we planted these storylines in synthetic data" once**, early — it is in the 0:20
+  line. Better volunteered than extracted in Q&A.
+- **The word "hallucinate" should come from us, not from a judge.** The author raised it;
+  own it at 1:15 and 2:35.
 - **If something breaks, keep talking and move to the next tab.** Do not debug on stage.
   Screenshots are the fallback; the narrator covers while the driver switches.
 
@@ -53,10 +55,13 @@ gains more than it costs.
 - The 4-day manual baseline in "time to pattern" is our assumption, not a measurement.
 
 **Real:**
-- TF-IDF clustering, all five signals, the risk score and the triage gate
+- TF-IDF clustering, deterministic category matching, all five signals, the risk score and
+  the triage gate
 - The change-correlation root-cause engine
-- Every Apertus call — live during the build, replayed from cache on stage so the demo
-  doesn't depend on conference wifi. Prompts and responses are in the audit tab.
+- The grounding validator — every entity the model names is checked against the source
+  data, live, on every call
+- Every LLM call — live during the build, replayed from cache on stage so the demo doesn't
+  depend on conference wifi. Prompts, responses and grounding checks are in the audit tab.
 - Cluster purity, measured against the planted ground-truth labels
 
 ---
@@ -66,6 +71,7 @@ gains more than it costs.
 | If | Then |
 |---|---|
 | Wifi dies | Nothing changes — `cache_only` never touches the network |
+| Cache miss mid-demo | Degrades to a `confidence: 0.0` stub and routes to a human — ugly but coherent, and arguably on-message |
 | App crashes | Restart is ~5s; narrator covers with the problem framing |
 | Restart fails | Screenshots slide deck, keep the same beat sheet |
 | Laptop dies | Second laptop has the project and the cache file |

@@ -3,9 +3,13 @@
 Owned by Lane A, but **everyone should understand this page** — it is what a judge will
 probe in Q&A, and Lane D has to explain it in 20 seconds on stage.
 
-Design principle: **no number appears on screen without its components.** A bare "risk:
-78" is a black box and a risk function would never accept it. A 78 that decomposes into
-five visible bars is a defensible assessment.
+Two design principles:
+
+1. **No number appears on screen without its components.**
+2. **Risk is computed from data; confidence is computed from checks.** They are separate
+   axes and they gate different things — see §3–§4.
+A bare "risk: 78" is a black box and a risk function would never accept it. A 78 that
+decomposes into five visible bars is a defensible assessment.
 
 ---
 
@@ -105,64 +109,94 @@ genuinely doesn't score, that is Lane B's data to fix, not Lane A's formula to b
 
 ---
 
-## 3. Triage gate — when does a human step in?
+## 3. Confidence — derived, never self-reported
+
+**Superseded by [GROUNDING.md §5](GROUNDING.md#5-confidence-is-derived-never-self-reported);
+repeated here because it drives the gate below.**
+
+A model that hallucinates a cause will happily report 0.9 next to it, so its own number is
+advisory only — it can pull confidence *down*, never up:
+
+```python
+confidence = min(
+    category_match_confidence,   # deterministic — match against the seed catalog
+    grounding_score,             # deterministic — fraction of the model's claims verified
+    llm_stated_confidence,       # advisory only
+)
+if state == "UNKNOWN":
+    confidence = min(confidence, 0.30)   # hard ceiling — unseen never reaches automation
+```
+
+Two deterministic checks cap it, and an unseen case is capped below the automation
+threshold by construction.
+
+---
+
+## 4. Triage gate — when does a human step in?
 
 The obvious design ("auto-resolve anything above 80") is backwards: *high* risk is exactly
-what you don't automate. We separate the two axes:
+what you don't automate. Three axes, not one:
 
-- **Risk** answers *how urgent is this?*
-- **AI confidence** answers *how safe is it to act without a human?*
+- **Risk** — how urgent is this?
+- **Category state** — have we seen this class of problem before?
+- **Confidence** — how safe is it to act without a human?
 
 ```
-                    AI confidence
-                 low          high
-              ┌────────────┬──────────────┐
-    high risk │   HUMAN    │   ESCALATE   │
-              │  REVIEW    │   (now, with │
-              │            │   evidence   │
-              │            │   pack)      │
-              ├────────────┼──────────────┤
-    low  risk │   HUMAN    │ AUTO-RESOLVE │
-              │  REVIEW    │ (playbook)   │
-              └────────────┴──────────────┘
+                       confidence (derived)
+                    low              high
+                 ┌──────────────┬────────────────┐
+     high risk   │ HUMAN REVIEW │   ESCALATE     │
+                 │              │ (now, with the │
+                 │              │  evidence pack)│
+                 ├──────────────┼────────────────┤
+     low  risk   │ HUMAN REVIEW │  AUTO-RESOLVE  │
+                 │              │  (playbook)    │
+                 └──────────────┴────────────────┘
+
+     state == UNKNOWN  →  HUMAN EXPERT, always. No cell of the matrix applies.
 ```
 
 Implemented in `core/score.py`:
 
 ```python
-HIGH_RISK   = 45     # tuned against the demo data
-HIGH_CONF   = 0.75
+HIGH_RISK = 45       # tuned against the demo data
+HIGH_CONF = 0.75
 
-if confidence < HIGH_CONF:
-    action = "human_review"          # AI is unsure → a human always decides
+if state == "UNKNOWN":
+    action = "human_expert"      # never seen → a person decides, full stop
+elif confidence < HIGH_CONF:
+    action = "human_review"      # AI is unsure → a human decides
 elif risk_score >= HIGH_RISK:
-    action = "escalate"              # urgent + well-understood → route now, pre-briefed
+    action = "escalate"          # urgent + well-understood → route now, pre-briefed
 elif playbook and playbook["auto_resolve_eligible"]:
-    action = "auto_resolve"          # routine + well-understood → send the known fix
+    action = "auto_resolve"      # routine + well-understood → send the known fix
 else:
-    action = "human_review"          # no playbook exists → a human must decide
+    action = "human_review"      # no playbook exists → a human must decide
 ```
 
-Three things worth saying out loud in the pitch:
+Four things worth saying out loud in the pitch:
 
+- **Unseen always means a human.** This is the challenge author's requirement made
+  structural: an UNKNOWN theme cannot reach the automated path, because its confidence is
+  capped at 0.30 *and* the gate short-circuits before the matrix is consulted. Two
+  independent mechanisms, deliberately.
 - **Low confidence always routes to a human.** The system is allowed to say *"I don't
-  know"*, and that is a feature, not a gap. It is the difference between a decision
-  support tool a bank can deploy and a chatbot it cannot.
-- **Escalate is not "do nothing".** The evidence pack — tickets, timeline, correlated
-  change, contributing factors — is already assembled when the human opens it. The AI
-  did the 40 minutes of gathering; the human does the 2 minutes of judgement.
-- **No playbook → human.** S3 (the IBAN issue) has no playbook by design, so it routes to
-  a person even though the AI understood it. That is the correct behaviour and it is
-  worth pointing at.
+  know"* — the difference between decision support a bank can deploy and a chatbot it
+  cannot.
+- **Escalate is not "do nothing".** Tickets, timeline, correlated change, contributing
+  factors — assembled before the human opens it. The AI does the 40 minutes of gathering;
+  the human does the 2 minutes of judgement.
+- **No playbook → human.** S3 has no playbook by design, so it routes to a person. Correct
+  behaviour, and worth pointing at.
 
-Every confirm/override the user clicks is written to the audit log with the user, the
-timestamp, the action taken and whether it agreed with the recommendation. Over time that
-becomes the calibration data for the thresholds — which is the honest answer to *"how do
-you know the gate is set right?"*: **you don't, at first; you measure it.**
+Every confirm/override is written to the audit log with the user, timestamp, action, and
+whether it agreed with the recommendation. That becomes the calibration data for these
+thresholds — the honest answer to *"how do you know the gate is set right?"* is
+**you don't, at first; you measure it.**
 
 ---
 
-## 4. Impact numbers (the closing tile)
+## 5. Impact numbers (the closing tile)
 
 All computed, none hardcoded — `core/evaluate.py`:
 
@@ -174,6 +208,8 @@ All computed, none hardcoded — `core/evaluate.py`:
 | Time-to-pattern | S1: hours between first ticket and the point the theme crosses the risk threshold, vs. a stated manual baseline of ~4 days |
 | Cluster purity | against `_gt_theme` — the **only** place ground truth is read |
 | LLM calls per run | count from the audit log — ~20 for 1,400 tickets, the scalability proof |
+| Grounding rate | share of model claims verified against source data — should be 100% |
+| Seen vs unseen | themes matched to a known category vs routed to a human expert |
 
 **Be honest about the 4-day manual baseline** — it is our assumption, not a measurement.
 Say "assumed" on the slide. Judges reward a clearly labelled assumption and punish a

@@ -152,7 +152,56 @@ novel IBAN theme — "no playbook exists for this" is exactly why it routes to a
 
 ---
 
-## 4. Theme — produced by Lane A, in memory
+## 4. Category — `data/categories.json`
+
+Owner: **Lane D**. Consumed by: A (`core/categories.py`), C (prompt context).
+
+The seed catalog of *already known* problems, requested by the challenge author. Matching
+a theme against it is **deterministic** — no model decides whether something is known.
+Full semantics in [GROUNDING.md §3](GROUNDING.md#3-known-categories--datacategoriesjson).
+
+```json
+{
+  "category_id": "CAT-AUTH-001",
+  "name": "Authentication / login failure",
+  "description": "A client cannot authenticate to a digital channel.",
+  "systems": ["MobileApp", "eBanking"],
+  "keywords": ["login", "log in", "2fa", "access denied", "biometric", "pin rejected", "locked out"],
+  "typical_severity": 3,
+  "playbook_id": "PB-LOGIN-001",
+  "known_root_causes": [
+    "client app version mismatch",
+    "expired signing certificate",
+    "auth service degradation",
+    "credential store corruption after update"
+  ],
+  "auto_resolve_eligible": true
+}
+```
+
+| Field | Type | Rules |
+|---|---|---|
+| `category_id` | string | `CAT-` + short slug + 3 digits, unique |
+| `name` | string | how it appears on a theme card |
+| `description` | string | one sentence; goes into the prompt context |
+| `systems` | array | subset of the system enum |
+| `keywords` | array | lowercase; drives the deterministic match score |
+| `typical_severity` | int | 1–5, the expected severity for this category |
+| `playbook_id` | string \| null | must match a `playbook_id`, or null |
+| `known_root_causes` | array | **the only causes the model may choose from for a KNOWN theme** |
+| `auto_resolve_eligible` | bool | false for anything a human must always see |
+
+`known_root_causes` is the grounding lever: for a seen category the model picks from this
+list rather than inventing a cause. For an unseen theme there is no list — which is
+exactly why the model is not allowed to conclude anything there.
+
+**8–10 categories**, covering the background themes plus authentication and FX. Deliberately
+**no category matching storyline S3** (the Austrian IBAN issue) — it must come out
+`UNKNOWN`, because "the system correctly says it has never seen this" is the point.
+
+---
+
+## 5. Theme — produced by Lane A, in memory
 
 Not a file you write, but the shape the app renders. Documented so Lane D can design
 slides against it and Lane C knows what its output feeds.
@@ -172,6 +221,12 @@ slides against it and Lane C knows what its output feeds.
     "recurrence": 0.0, "blast_radius": 0.64
   },
   "risk_score": 78,
+  "category": {
+    "category_id": "CAT-AUTH-001",
+    "name": "Authentication / login failure",
+    "match_score": 0.85,
+    "state": "KNOWN-VARIANT"
+  },
   "root_cause": {
     "hypothesis": "...",
     "contributing_factors": ["...", "..."],
@@ -190,21 +245,25 @@ slides against it and Lane C knows what its output feeds.
   },
   "provenance": {
     "stage": "deterministic",
-    "ai_calls": ["call_7f3a", "call_9b21"]
+    "ai_calls": ["call_7f3a", "call_9b21"],
+    "grounding": {"grounded": true, "score": 1.0, "unverified": []}
   }
 }
 ```
 
 `signals` values are all normalised **0.0–1.0**. `risk_score` is an **int 0–100**.
 `triage.action` is one of `auto_resolve` `human_review` `escalate`.
+`category.state` is one of `KNOWN` `KNOWN-VARIANT` `UNKNOWN` — see
+[GROUNDING.md §4](GROUNDING.md#4-three-states--seen-variant-unseen). On `UNKNOWN`,
+`root_cause.hypothesis` is `null` by design, not by failure.
 `provenance.stage` is `deterministic` (Stage 1 found it) or `ai` (Stage 2 found it) —
 the app badges these differently, and the `ai` badge is the money shot for the novel theme.
 
 ---
 
-## 5. Audit entry — `core/audit.py`, rendered in the AI Audit tab
+## 6. Audit entry — `core/audit.py`, rendered in the AI Audit tab
 
-Every Apertus call produces one of these. Nothing the AI says reaches the screen without
+Every LLM call produces one of these. Nothing the AI says reaches the screen without
 one.
 
 ```json
@@ -213,21 +272,28 @@ one.
   "ts": "2026-09-22T14:03:11Z",
   "function": "name_theme",
   "theme_id": "T-03",
-  "model": "apertus-70b-instruct",
+  "provider": "openai",
+  "model": "gpt-4.1",
   "source": "live",
-  "prompt": "<full prompt text>",
+  "system": "<full system prompt>",
+  "user": "<full user prompt, including the verbatim CONTEXT block>",
   "response": "<full raw response text>",
   "parsed": { "...": "..." },
+  "grounding": {"grounded": true, "score": 1.0, "verified": [], "unverified": []},
   "latency_ms": 1840
 }
 ```
 
-`source` is `live` or `cache`. During the demo everything will read `cache` — that is
-fine and honest; the tab shows the prompt and the response either way.
+`source` is `live`, `cache` or `mock`. During the demo everything reads `cache` — that is
+fine and honest; the tab shows the prompt, the response and the grounding check either way.
+
+The `user` field must contain the **verbatim** CONTEXT block that was sent. `core/grounding.py`
+re-reads it to determine what the model was permitted to see; without it, grounding cannot
+be verified at all.
 
 ---
 
-## 6. File layout
+## 7. File layout
 
 ```
 UBS-innovation-challenge/
@@ -241,11 +307,13 @@ UBS-innovation-challenge/
 │   ├── cluster.py             #   Stage 1
 │   ├── signals.py             #   trend/novelty/severity/recurrence/blast
 │   ├── score.py               #   risk score + triage gate
-│   ├── rootcause.py           #   change correlation
+│   ├── rootcause.py           #   change correlation (runs BEFORE the LLM)
+│   ├── categories.py          #   deterministic KNOWN / VARIANT / UNKNOWN match
+│   ├── grounding.py           #   verify every entity the model named
 │   ├── evaluate.py            #   the ONLY module allowed to read _gt_*
 │   └── audit.py               #   AI decision log
 ├── ai/                        # Lane C
-│   ├── apertus.py             #   client + cache + the three functions
+│   ├── llm.py                 #   provider abstraction + cache + the three functions
 │   └── prompts.py             #   prompt templates
 ├── gen/                       # Lane B
 │   └── generate.py
@@ -253,22 +321,24 @@ UBS-innovation-challenge/
 │   ├── tickets.json           # Lane B  (generated, committed)
 │   ├── changes.json           # Lane B  (generated, committed)
 │   ├── playbooks.json         # Lane D  (hand-written)
+│   ├── categories.json        # Lane D  (hand-written)
 │   └── cache/
 │       └── llm_cache.json     # Lane C  (generated, committed at freeze)
 ├── slides/                    # Lane D
 └── docs/
     ├── SCHEMA.md              # this file
+    ├── GROUNDING.md           # no-hallucination + known/unknown contract
     ├── SCORING.md
     ├── LANE_A_PIPELINE.md
     ├── LANE_B_DATA.md
-    ├── LANE_C_APERTUS.md
+    ├── LANE_C_LLM.md
     ├── LANE_D_PITCH.md
     └── DEMO_SCRIPT.md
 ```
 
 ---
 
-## 7. Validation
+## 8. Validation
 
 Lane A ships `core/schema.py` with:
 
@@ -276,6 +346,7 @@ Lane A ships `core/schema.py` with:
 validate_tickets(path) -> tuple[list[dict], list[str]]   # (tickets, errors)
 validate_changes(path) -> tuple[list[dict], list[str]]
 validate_playbooks(path) -> tuple[list[dict], list[str]]
+validate_categories(path) -> tuple[list[dict], list[str]]
 ```
 
 and a CLI so Lanes B and D can self-check without running the app:

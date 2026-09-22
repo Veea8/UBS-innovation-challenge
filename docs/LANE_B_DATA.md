@@ -155,6 +155,11 @@ change, but the pattern predates it."
 
 > **No single keyword appears in more than 4 of the 11 tickets.**
 
+It must also **match no category** in Lane D's `data/categories.json` — it has to come out
+`UNKNOWN` so the system refuses to guess a cause and escalates to a human expert. Check
+this with Lane D: if your wording drifts toward their `CAT-PAY-001` keywords, the best
+twenty seconds of the demo evaporate.
+
 Describe the *same* problem 11 different ways — that is the whole trick. Some say IBAN,
 some say account number, some say beneficiary, some describe the symptom without naming
 the cause, some blame the client, one is a monitoring alert with a stack-trace-ish string.
@@ -319,6 +324,7 @@ ten minutes before it starts.
 - [ ] S1 spans two systems (MobileApp + eBanking spillover)
 - [ ] S2 has exactly 3 episodes with near-identical resolution notes
 - [ ] S3: no keyword in more than 4 of its 11 tickets; no `linked_change_id` on any
+- [ ] S3 matches **no** category in `data/categories.json` — checked with Lane D
 - [ ] N1 (password reset) does **not** use the phrase "cannot log in"
 - [ ] ~12% `linked_change_id` coverage in S1, not 100%
 - [ ] ≥1 innocent change within ±48h of each guilty change
