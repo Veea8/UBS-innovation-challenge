@@ -1,0 +1,486 @@
+[
+  {
+    "change_id": "CHG-1001",
+    "deployed_at": "2026-07-02T06:10:00Z",
+    "system": "eBanking",
+    "title": "eBanking — dependency patch for account summary widgets",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1029",
+    "deployed_at": "2026-07-09T07:55:00Z",
+    "system": "CardServices",
+    "title": "CardServices — rate source health check change",
+    "type": "vendor",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1002",
+    "deployed_at": "2026-07-12T12:20:00Z",
+    "system": "CardServices",
+    "title": "CardServices — issuer batch refresh for travel alerts",
+    "type": "config",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1030",
+    "deployed_at": "2026-07-15T18:25:00Z",
+    "system": "Onboarding",
+    "title": "Onboarding — network policy update for APAC",
+    "type": "release",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1003",
+    "deployed_at": "2026-07-18T09:00:00Z",
+    "system": "Onboarding",
+    "title": "Onboarding — resume upload storage tuning",
+    "type": "infra",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1031",
+    "deployed_at": "2026-07-22T04:50:00Z",
+    "system": "Reporting",
+    "title": "Reporting — queue management update",
+    "type": "config",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1004",
+    "deployed_at": "2026-07-23T14:15:00Z",
+    "system": "Reporting",
+    "title": "Reporting — month-end job prioritisation",
+    "type": "vendor",
+    "regions": [
+      "AMER"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1005",
+    "deployed_at": "2026-07-28T16:00:00Z",
+    "system": "Payments",
+    "title": "Payments — increase SEPA batch window",
+    "type": "certificate",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Infrastructure",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1032",
+    "deployed_at": "2026-07-30T09:00:00Z",
+    "system": "Payments",
+    "title": "Payments — address validation configuration",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1006",
+    "deployed_at": "2026-08-04T05:00:00Z",
+    "system": "eBanking",
+    "title": "eBanking — failover test, Zurich DC",
+    "type": "release",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1033",
+    "deployed_at": "2026-08-05T13:10:00Z",
+    "system": "FX-Trading",
+    "title": "FX-Trading — benefit name lookup patch",
+    "type": "vendor",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1007",
+    "deployed_at": "2026-08-08T13:40:00Z",
+    "system": "MobileApp",
+    "title": "MobileApp — push notification telemetry clean-up",
+    "type": "config",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1034",
+    "deployed_at": "2026-08-12T07:00:00Z",
+    "system": "eBanking",
+    "title": "eBanking — market data checksum validation",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1008",
+    "deployed_at": "2026-08-13T11:20:00Z",
+    "system": "eBanking",
+    "title": "eBanking — quarterly dependency patch",
+    "type": "release",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1026",
+    "deployed_at": "2026-08-15T16:00:00Z",
+    "system": "Payments",
+    "title": "Payments — OTP resend text copy update",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1009",
+    "deployed_at": "2026-08-17T18:00:00Z",
+    "system": "CardServices",
+    "title": "CardServices — fraud rule update for geolocation",
+    "type": "config",
+    "regions": [
+      "AMER"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1035",
+    "deployed_at": "2026-08-18T09:20:00Z",
+    "system": "CardServices",
+    "title": "CardServices — ad-hoc export timeout tweak",
+    "type": "config",
+    "regions": [
+      "AMER"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1027",
+    "deployed_at": "2026-08-20T06:30:00Z",
+    "system": "FX-Trading",
+    "title": "FX-Trading — data retention cleanup",
+    "type": "infra",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Digital Channels",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1010",
+    "deployed_at": "2026-08-23T08:30:00Z",
+    "system": "Onboarding",
+    "title": "Onboarding — document OCR confidence tuning",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1028",
+    "deployed_at": "2026-08-26T09:00:00Z",
+    "system": "eBanking",
+    "title": "eBanking — domestic payment routing patch",
+    "type": "config",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1036",
+    "deployed_at": "2026-08-28T11:30:00Z",
+    "system": "Onboarding",
+    "title": "Onboarding — beneficiary name lookup patch",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1011",
+    "deployed_at": "2026-08-29T14:10:00Z",
+    "system": "Reporting",
+    "title": "Reporting — report cache invalidation hotfix",
+    "type": "infra",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1012",
+    "deployed_at": "2026-09-01T09:40:00Z",
+    "system": "Payments",
+    "title": "Payments — ACH routing rule adjustment",
+    "type": "config",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1013",
+    "deployed_at": "2026-09-04T21:00:00Z",
+    "system": "FX-Trading",
+    "title": "FX-Trading — APAC market calendar update",
+    "type": "vendor",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Infrastructure",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1014",
+    "deployed_at": "2026-09-05T04:00:00Z",
+    "system": "eBanking",
+    "title": "eBanking — certificate rotation on edge gateways",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1037",
+    "deployed_at": "2026-09-06T05:15:00Z",
+    "system": "Reporting",
+    "title": "Reporting — market data checksum validation",
+    "type": "config",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1015",
+    "deployed_at": "2026-09-08T12:00:00Z",
+    "system": "MobileApp",
+    "title": "MobileApp — app startup instrumentation",
+    "type": "config",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Client Access Platform",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-0091",
+    "deployed_at": "2026-09-09T19:30:00Z",
+    "system": "FX-Trading",
+    "title": "FX Trading — vendor feed config refresh for APAC desk",
+    "type": "vendor",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": "2026-09-11T14:10:00Z"
+  },
+  {
+    "change_id": "CHG-1016",
+    "deployed_at": "2026-09-10T17:40:00Z",
+    "system": "Reporting",
+    "title": "Reporting — performance tuning for month-end jobs",
+    "type": "release",
+    "regions": [
+      "AMER"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-0103",
+    "deployed_at": "2026-09-12T04:00:00Z",
+    "system": "Payments",
+    "title": "Payments — upgrade beneficiary validation library to v3.1",
+    "type": "vendor",
+    "regions": [
+      "CH",
+      "EMEA"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1017",
+    "deployed_at": "2026-09-13T06:20:00Z",
+    "system": "eBanking",
+    "title": "eBanking — session timeout recalibration",
+    "type": "config",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-0042",
+    "deployed_at": "2026-09-14T22:00:00Z",
+    "system": "MobileApp",
+    "title": "Mobile App 4.2.0 — migrate to new auth SDK",
+    "type": "release",
+    "regions": [
+      "CH",
+      "EMEA",
+      "APAC",
+      "AMER"
+    ],
+    "owner_team": "Digital Channels",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1018",
+    "deployed_at": "2026-09-15T07:30:00Z",
+    "system": "CardServices",
+    "title": "CardServices — travel risk scoring patch",
+    "type": "release",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Market Data Platform",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1019",
+    "deployed_at": "2026-09-16T20:00:00Z",
+    "system": "Onboarding",
+    "title": "Onboarding — legal entity validation library bump",
+    "type": "infra",
+    "regions": [
+      "AMER"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1020",
+    "deployed_at": "2026-09-18T04:30:00Z",
+    "system": "Payments",
+    "title": "Payments — limit query cache expiry adjustment",
+    "type": "config",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": "2026-07-03T09:10:00Z"
+  },
+  {
+    "change_id": "CHG-1021",
+    "deployed_at": "2026-09-19T10:10:00Z",
+    "system": "FX-Trading",
+    "title": "FX-Trading — counterparty status service change",
+    "type": "vendor",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1022",
+    "deployed_at": "2026-09-19T22:30:00Z",
+    "system": "eBanking",
+    "title": "eBanking — storage failover drill, Singapore",
+    "type": "release",
+    "regions": [
+      "APAC"
+    ],
+    "owner_team": "Digital Channels",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1023",
+    "deployed_at": "2026-09-20T12:00:00Z",
+    "system": "CardServices",
+    "title": "CardServices — device health telemetry add-on",
+    "type": "config",
+    "regions": [
+      "EMEA"
+    ],
+    "owner_team": "Infrastructure",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1024",
+    "deployed_at": "2026-09-21T08:00:00Z",
+    "system": "Onboarding",
+    "title": "Onboarding — auth cookie TTL adjustment",
+    "type": "release",
+    "regions": [
+      "CH"
+    ],
+    "owner_team": "Payments Engineering",
+    "rollback_at": null
+  },
+  {
+    "change_id": "CHG-1025",
+    "deployed_at": "2026-09-21T14:40:00Z",
+    "system": "Reporting",
+    "title": "Reporting — EMV fallback config refresh",
+    "type": "config",
+    "regions": [
+      "AMER"
+    ],
+    "owner_team": "Core Banking Ops",
+    "rollback_at": null
+  }
+]
