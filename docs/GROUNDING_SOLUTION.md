@@ -46,6 +46,17 @@ For each cluster, changes are candidates only when they:
 The script reports these as **candidate evidence**, not as proven causes. A change ID can
 only appear in output if it came from `data/changes.json`.
 
+The cluster output now exposes a `root_cause` object. This is deliberately a qualified
+finding, not an unconditional causal statement:
+
+- `candidate` means the leading real change passed the evidence filters;
+- `not_established` means no supplied change passed all filters;
+- `withheld_unknown` means the cluster is novel and root-cause claims are forbidden.
+
+The leading candidate is ranked using corroborating linked tickets, matching text terms,
+and temporal proximity. Even for a `candidate`, the output records that correlation is not
+proof of causation. This gives the LLM a bounded evidence-backed explanation to describe,
+while preventing it from inventing a root cause.
 ### 4. Assign a grounding state
 
 | State | Category score | Permitted conclusion | Route |

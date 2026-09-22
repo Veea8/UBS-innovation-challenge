@@ -1,0 +1,317 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R] /Count 4 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 3084 >>
+stream
+BT
+/F1 8.5 Tf
+50 750 Td
+/F1 18 Tf (UBS Ticket Intelligence: Workflow, Grounding, and Value) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (Executive summary) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (This project turns a noisy operational ticket stream into explainable themes and) Tj 0 -11 Td
+/F1 8.5 Tf (evidence-backed root-cause candidates. The central design choice is a closed-world) Tj 0 -11 Td
+/F1 8.5 Tf (grounding contract: the system may use only the supplied ticket and change data,) Tj 0 -11 Td
+/F1 8.5 Tf (and it) Tj 0 -11 Td
+/F1 8.5 Tf (must send novel or weakly supported cases to a human instead of inventing an) Tj 0 -11 Td
+/F1 8.5 Tf (answer.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The deterministic code decides what is supported. An LLM, when added, explains) Tj 0 -11 Td
+/F1 8.5 Tf (only that) Tj 0 -11 Td
+/F1 8.5 Tf (verified evidence in natural language. It does not decide whether a case is known,) Tj 0 -11 Td
+/F1 8.5 Tf (search) Tj 0 -11 Td
+/F1 8.5 Tf (for external causes, or create an unsupported solution.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (1. Project workflow) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8 Tf (Tickets and changes) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Load JSON and remove ground-truth fields) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Normalize ticket text and match controlled rules) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Group tickets into clusters) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Check system, region, time, and text evidence against real changes) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Calculate state, confidence, and root-cause status) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (+--> Known: prepare evidence-backed explanation) Tj 0 -11 Td
+/F1 8 Tf (+--> Variant: human review) Tj 0 -11 Td
+/F1 8 Tf (+--> Unknown: human expert, no cause claim) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Optional LLM explanation using only the evidence pack) Tj 0 -11 Td
+/F1 8 Tf (|) Tj 0 -11 Td
+/F1 8 Tf (v) Tj 0 -11 Td
+/F1 8 Tf (Validate every generated entity before display) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8.5 Tf (The implemented pipeline is scripts/groundedcluster.py. It reads JSON tickets and) Tj 0 -11 Td
+/F1 8.5 Tf (changes, ignores every field whose name begins with , and writes an auditable) Tj 0 -11 Td
+/F1 8.5 Tf (cluster) Tj 0 -11 Td
+/F1 8.5 Tf (result. The gttheme field is evaluation metadata only; it is never used to choose) Tj 0 -11 Td
+/F1 8.5 Tf (a) Tj 0 -11 Td
+/F1 8.5 Tf (cluster.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (2. The rule book) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The current practical rule book is the RULES tuple in scripts/groundedcluster.py.) Tj 0 -11 Td
+/F1 8.5 Tf (Each rule contains a name, allowed systems, keywords, and optional excluded terms:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Rule Systems Purpose) Tj 0 -11 Td
+/F1 8.5 Tf (`mobile_login_failure` MobileApp, eBanking Login, PIN, biometric, 2FA, and update) Tj 0 -11 Td
+/F1 8.5 Tf (problems) Tj 0 -11 Td
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 3699 >>
+stream
+BT
+/F1 8.5 Tf
+50 750 Td
+/F1 8.5 Tf (`fx_settlement` FX-Trading FX, settlement, rates, feeds, and mismatch problems) Tj 0 -11 Td
+/F1 8.5 Tf (`password_reset` eBanking Password, reset, credentials, and lockout problems) Tj 0 -11 Td
+/F1 8.5 Tf (`statement_download` eBanking Statement export and PDF availability problems) Tj 0 -11 Td
+/F1 8.5 Tf (`reporting_slow_month_end` Reporting Reporting, month-end, latency, and queue) Tj 0 -11 Td
+/F1 8.5 Tf (problems) Tj 0 -11 Td
+/F1 8.5 Tf (`card_blocked_abroad` CardServices Card declines and travel-related blocks) Tj 0 -11 Td
+/F1 8.5 Tf (`onboarding_upload` Onboarding Identity documents, upload, and validation problems) Tj 0 -11 Td
+/F1 8.5 Tf (`payment_limits` Payments Beneficiary, payee, limit, and authorisation problems) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The payment-limit rule excludes IBAN, Austrian, and beneficiary-validation terms.) Tj 0 -11 Td
+/F1 8.5 Tf (This) Tj 0 -11 Td
+/F1 8.5 Tf (prevents the intentionally novel IBAN scenario from being incorrectly absorbed) Tj 0 -11 Td
+/F1 8.5 Tf (into a) Tj 0 -11 Td
+/F1 8.5 Tf (known payment category.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (3. Category matching and clustering) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (For each ticket and each rule, the script normalizes the title and description,) Tj 0 -11 Td
+/F1 8.5 Tf (finds) Tj 0 -11 Td
+/F1 8.5 Tf (approved terms, and calculates:) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8 Tf (keyword_score = matched rule terms / total rule terms) Tj 0 -11 Td
+/F1 8 Tf (system_score = 1.0 if ticket.system is allowed, otherwise 0.0) Tj 0 -11 Td
+0 -8 Td
+/F1 8 Tf (ticket_category_score =) Tj 0 -11 Td
+/F1 8 Tf (0.7 * keyword_score + 0.3 * system_score) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8.5 Tf (The highest-scoring rule wins. If the best ticket score is below 0.20, the ticket) Tj 0 -11 Td
+/F1 8.5 Tf (is) Tj 0 -11 Td
+/F1 8.5 Tf (assigned to unclassified rather than forced into a known category. Tickets) Tj 0 -11 Td
+/F1 8.5 Tf (assigned to) Tj 0 -11 Td
+/F1 8.5 Tf (the same rule are grouped into one cluster. The cluster category score is the) Tj 0 -11 Td
+/F1 8.5 Tf (average of) Tj 0 -11 Td
+/F1 8.5 Tf (the ticket scores in that cluster.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (4. Change evidence and root-cause candidates) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (A change is accepted as candidate evidence only when all checks pass:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (1. The change system matches the cluster system.) Tj 0 -11 Td
+/F1 8.5 Tf (2. At least one change region overlaps a cluster region.) Tj 0 -11 Td
+/F1 8.5 Tf (3. The change happened before the first ticket.) Tj 0 -11 Td
+/F1 8.5 Tf (4. The change happened within 7 days by default; this is the --change-window-days) Tj 0 -11 Td
+/F1 8.5 Tf (parameter.) Tj 0 -11 Td
+/F1 8.5 Tf (5. At least one meaningful word from the change title appears in the ticket) Tj 0 -11 Td
+/F1 8.5 Tf (corpus.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Candidate changes are ranked by linked-ticket count, matching-term count, time) Tj 0 -11 Td
+/F1 8.5 Tf (proximity,) Tj 0 -11 Td
+/F1 8.5 Tf (and change ID. A candidate is evidence for investigation, not proof of causation.) Tj 0 -11 Td
+/F1 8.5 Tf (The) Tj 0 -11 Td
+/F1 8.5 Tf (output records the leading change in a rootcause object:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Status Meaning) Tj 0 -11 Td
+/F1 8.5 Tf (`candidate` A real change passed all evidence filters) Tj 0 -11 Td
+/F1 8.5 Tf (`not_established` No supplied change passed all evidence filters) Tj 0 -11 Td
+/F1 8.5 Tf (`withheld_unknown` The cluster is novel, so a cause claim is forbidden) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (5. Evidence strength and confidence) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Evidence strength is based on accepted candidate changes:) Tj 0 -11 Td
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 3386 >>
+stream
+BT
+/F1 8.5 Tf
+50 750 Td
+0 -8 Td
+0 -8 Td
+/F1 8 Tf (evidence_strength = min\(1.0, accepted_candidate_changes / 2\)) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8.5 Tf (Therefore, zero changes gives 0.0, one gives 0.5, and two or more gives 1.0.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Confidence is deliberately conservative:) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8 Tf (evidence_confidence = 0.5 + 0.5 * evidence_strength) Tj 0 -11 Td
+/F1 8 Tf (confidence = min\(cluster_category_score, evidence_confidence\)) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8.5 Tf (An unknown cluster is additionally capped at 0.30. This means good keyword) Tj 0 -11 Td
+/F1 8.5 Tf (similarity) Tj 0 -11 Td
+/F1 8.5 Tf (cannot create high confidence when supporting evidence is absent, and an) Tj 0 -11 Td
+/F1 8.5 Tf (unfamiliar case) Tj 0 -11 Td
+/F1 8.5 Tf (cannot enter an automated path merely because it sounds plausible.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (6. Seen, variant, and unseen decisions) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The cluster average determines the state:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Cluster category score State Route Allowed conclusion) Tj 0 -11 Td
+/F1 8.5 Tf (`>= 0.60` `KNOWN` `evidence_review` Explain the pattern and approved evidence) Tj 0 -11 Td
+/F1 8.5 Tf (`0.30-0.59` `KNOWN-VARIANT` `human_review` Describe the pattern, but require) Tj 0 -11 Td
+/F1 8.5 Tf (review) Tj 0 -11 Td
+/F1 8.5 Tf (`< 0.30` `UNKNOWN` `human_expert` Describe only; no root-cause claim) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (For UNKNOWN, the output sets causeclaimallowed to false, sets the root-cause) Tj 0 -11 Td
+/F1 8.5 Tf (status to withheldunknown, and leaves changeid as null.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (7. Where AI steps in) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The current script is deterministic and does not call an LLM. That is intentional:) Tj 0 -11 Td
+/F1 8.5 Tf (it) Tj 0 -11 Td
+/F1 8.5 Tf (creates a trustworthy evidence pack first. An LLM can then help with language and) Tj 0 -11 Td
+/F1 8.5 Tf (judgement, but only inside these boundaries:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (- summarize the verified cluster;) Tj 0 -11 Td
+/F1 8.5 Tf (- explain observed systems, regions, dates, symptoms, and severity;) Tj 0 -11 Td
+/F1 8.5 Tf (- describe a ranked change candidate;) Tj 0 -11 Td
+/F1 8.5 Tf (- select a solution from an approved playbook for a known category;) Tj 0 -11 Td
+/F1 8.5 Tf (- state when evidence is insufficient.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The LLM must not use external knowledge, invent ticket or change IDs, name systems) Tj 0 -11 Td
+/F1 8.5 Tf (or) Tj 0 -11 Td
+/F1 8.5 Tf (regions absent from the evidence, or create a solution for an unknown category. A) Tj 0 -11 Td
+/F1 8.5 Tf (later) Tj 0 -11 Td
+/F1 8.5 Tf (output validator should check every ticket ID, change ID, system, region, date,) Tj 0 -11 Td
+/F1 8.5 Tf (quote, and) Tj 0 -11 Td
+/F1 8.5 Tf (cause against the evidence pack. Invalid output is suppressed and routed to a) Tj 0 -11 Td
+/F1 8.5 Tf (human.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (8. Test data and results) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The repository contains 1,401 tickets, 40 changes, and ten scenario datasets. The) Tj 0 -11 Td
+/F1 8.5 Tf (tests) Tj 0 -11 Td
+/F1 8.5 Tf (are in tests/grounding and run with:) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8 Tf (python -m unittest discover -s tests/grounding -p 'test_*.py' -v) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8.5 Tf (The latest suite result is:) Tj 0 -11 Td
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 11 0 R >>
+endobj
+11 0 obj
+<< /Length 2803 >>
+stream
+BT
+/F1 8.5 Tf
+50 750 Td
+0 -8 Td
+0 -8 Td
+/F1 8 Tf (Ran 10 tests) Tj 0 -11 Td
+/F1 8 Tf (OK) Tj 0 -11 Td
+0 -8 Td
+0 -8 Td
+/F1 8.5 Tf (Key demonstrations:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Scenario Observed behavior Value) Tj 0 -11 Td
+/F1 8.5 Tf (Known login `mobile_login_failure`, `KNOWN-VARIANT`, real candidate such as) Tj 0 -11 Td
+/F1 8.5 Tf (`CHG-0042` Finds a known pattern while retaining review controls) Tj 0 -11 Td
+/F1 8.5 Tf (FX recurrence `fx_settlement`, `KNOWN`, no unsupported change candidate Shows that) Tj 0 -11 Td
+/F1 8.5 Tf (known does not mean causation is invented) Tj 0 -11 Td
+/F1 8.5 Tf (Unknown IBAN `unclassified`, `UNKNOWN`, confidence `<= 0.30`, human expert Finds) Tj 0 -11 Td
+/F1 8.5 Tf (novelty and withholds the cause) Tj 0 -11 Td
+/F1 8.5 Tf (Card abroad Known card cluster with system and region evidence Preserves) Tj 0 -11 Td
+/F1 8.5 Tf (geographic context) Tj 0 -11 Td
+/F1 8.5 Tf (Singleton-heavy Six separate small clusters Avoids fabricating one large incident) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The tests check ticket coverage, source-only IDs, no external sources, no) Tj 0 -11 Td
+/F1 8.5 Tf (ground-truth) Tj 0 -11 Td
+/F1 8.5 Tf (use, confidence caps, correct routing, and safe root-cause behavior. They validate) Tj 0 -11 Td
+/F1 8.5 Tf (the) Tj 0 -11 Td
+/F1 8.5 Tf (grounding contract; they are not a claim that clustering accuracy is 100 percent.) Tj 0 -11 Td
+0 -8 Td
+/F1 13 Tf (9. Project value) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The value is controlled automation for operational risk teams:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (- Speed: routine patterns can be grouped and explained consistently.) Tj 0 -11 Td
+/F1 8.5 Tf (- Traceability: every claim can point back to source tickets and real changes.) Tj 0 -11 Td
+/F1 8.5 Tf (- Risk control: unseen or weakly supported problems cannot silently become) Tj 0 -11 Td
+/F1 8.5 Tf (confident) Tj 0 -11 Td
+/F1 8.5 Tf (automated actions.) Tj 0 -11 Td
+/F1 8.5 Tf (- Human focus: experts spend time on novel and high-risk cases instead of) Tj 0 -11 Td
+/F1 8.5 Tf (searching) Tj 0 -11 Td
+/F1 8.5 Tf (through repetitive tickets.) Tj 0 -11 Td
+/F1 8.5 Tf (- Scalability: deterministic processing handles the bulk of tickets, while a) Tj 0 -11 Td
+/F1 8.5 Tf (future) Tj 0 -11 Td
+/F1 8.5 Tf (LLM can operate on clusters and evidence packs rather than every individual) Tj 0 -11 Td
+/F1 8.5 Tf (ticket.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The defensible claim is not that the system eliminates all hallucination. It is) Tj 0 -11 Td
+/F1 8.5 Tf (that the) Tj 0 -11 Td
+/F1 8.5 Tf (workflow establishes a controlled grounding boundary: the code decides what the) Tj 0 -11 Td
+/F1 8.5 Tf (data) Tj 0 -11 Td
+/F1 8.5 Tf (supports, the LLM explains only that support, and humans handle what remains) Tj 0 -11 Td
+/F1 8.5 Tf (uncertain.) Tj 0 -11 Td
+ET
+endstream
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000134 00000 n 
+0000000204 00000 n 
+0000000330 00000 n 
+0000003466 00000 n 
+0000003592 00000 n 
+0000007343 00000 n 
+0000007469 00000 n 
+0000010907 00000 n 
+0000011035 00000 n 
+trailer
+<< /Size 12 /Root 1 0 R >>
+startxref
+13891
+%%EOF

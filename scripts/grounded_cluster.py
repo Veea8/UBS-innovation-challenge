@@ -82,7 +82,11 @@ def candidate_changes(cluster: list[dict[str, Any]], changes: list[dict[str, Any
     regions = {ticket.get("region") for ticket in cluster}
     first_seen = min((parse_time(ticket.get("created_at")) for ticket in cluster if parse_time(ticket.get("created_at"))), default=None)
     corpus = normalize(" ".join(f"{ticket.get('title', '')} {ticket.get('description', '')}" for ticket in cluster))
-    ranked: list[tuple[int, dict[str, Any], list[str]]] = []
+    linked_counts = defaultdict(int)
+    for ticket in cluster:
+        if ticket.get("linked_change_id"):
+            linked_counts[ticket["linked_change_id"]] += 1
+    ranked: list[tuple[int, int, int, dict[str, Any], list[str]]] = []
     for change in changes:
         deployed = parse_time(change.get("deployed_at"))
         if not deployed or not first_seen or change.get("system") not in systems:
@@ -95,8 +99,9 @@ def candidate_changes(cluster: list[dict[str, Any]], changes: list[dict[str, Any
             continue
         if not overlap:
             continue
-        ranked.append((days, change, sorted(set(overlap))))
-    ranked.sort(key=lambda item: (item[0], item[1].get("change_id", "")))
+        matching_terms = sorted(set(overlap))
+        ranked.append((linked_counts[change.get("change_id")], len(matching_terms), days, change, matching_terms))
+    ranked.sort(key=lambda item: (-item[0], -item[1], item[2], item[3].get("change_id", "")))
     return [
         {
             "change_id": change.get("change_id"),
@@ -104,11 +109,40 @@ def candidate_changes(cluster: list[dict[str, Any]], changes: list[dict[str, Any
             "system": change.get("system"),
             "regions": change.get("regions", []),
             "days_before_first_ticket": days,
+            "linked_ticket_count": linked_ticket_count,
             "matching_terms": terms,
             "evidence_only": True,
         }
-        for days, change, terms in ranked[:5]
+        for linked_ticket_count, _, days, change, terms in ranked[:5]
     ]
+
+
+def root_cause_finding(
+    state: str,
+    cause_claim_allowed: bool,
+    evidence_changes: list[dict[str, Any]],
+) -> dict[str, Any]:
+    if state == "UNKNOWN":
+        return {
+            "status": "withheld_unknown",
+            "change_id": None,
+            "claim_allowed": False,
+            "reason": "No approved category; a root cause requires human investigation.",
+        }
+    if not evidence_changes:
+        return {
+            "status": "not_established",
+            "change_id": None,
+            "claim_allowed": False,
+            "reason": "No change passed the system, region, timing, and text evidence checks.",
+        }
+    leading = evidence_changes[0]
+    return {
+        "status": "candidate",
+        "change_id": leading["change_id"],
+        "claim_allowed": cause_claim_allowed,
+        "reason": "Leading change candidate ranked from supplied evidence; correlation is not proof of causation.",
+    }
 
 
 def build_output(tickets: list[dict[str, Any]], changes: list[dict[str, Any]], window_days: int) -> dict[str, Any]:
@@ -135,13 +169,15 @@ def build_output(tickets: list[dict[str, Any]], changes: list[dict[str, Any]], w
         confidence = min(category_score, 0.5 + 0.5 * evidence_strength)
         if state == "UNKNOWN":
             confidence = min(confidence, 0.30)
+        cause_claim_allowed = state == "KNOWN"
         result.append({
             "cluster_id": f"T-{len(result) + 1:02d}",
             "name": name,
             "state": state,
             "confidence": round(confidence, 3),
             "route": "human_expert" if state == "UNKNOWN" else "human_review" if state == "KNOWN-VARIANT" else "evidence_review",
-            "cause_claim_allowed": state == "KNOWN",
+            "cause_claim_allowed": cause_claim_allowed,
+            "root_cause": root_cause_finding(state, cause_claim_allowed, evidence_changes),
             "evidence": {
                 "ticket_ids": sorted(ticket.get("ticket_id") for ticket in cluster),
                 "systems": sorted({ticket.get("system") for ticket in cluster if ticket.get("system")}),

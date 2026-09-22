@@ -13,6 +13,8 @@ class KnownLoginScenario(unittest.TestCase):
         self.assertIn(login["state"], {"KNOWN", "KNOWN-VARIANT"})
         self.assertTrue(login["evidence"]["candidate_changes"])
         self.assertTrue(login["evidence"]["grounding_checks"]["change_ids_verified"])
+        self.assertEqual(login["root_cause"]["status"], "candidate")
+        self.assertEqual(login["root_cause"]["change_id"], login["evidence"]["candidate_changes"][0]["change_id"])
 
 
 if __name__ == "__main__":

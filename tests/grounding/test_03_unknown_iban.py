@@ -12,6 +12,8 @@ class UnknownIbanScenario(unittest.TestCase):
         self.assertEqual(cluster["route"], "human_expert")
         self.assertFalse(cluster["cause_claim_allowed"])
         self.assertLessEqual(cluster["confidence"], 0.30)
+        self.assertEqual(cluster["root_cause"]["status"], "withheld_unknown")
+        self.assertIsNone(cluster["root_cause"]["change_id"])
 
 
 if __name__ == "__main__":
