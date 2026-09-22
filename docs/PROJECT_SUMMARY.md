@@ -140,11 +140,12 @@ The cluster average determines the state:
 For `UNKNOWN`, the output sets `cause_claim_allowed` to `false`, sets the root-cause
 status to `withheld_unknown`, and leaves `change_id` as `null`.
 
-## 7. Where AI steps in
+## 7. Where AI steps in and where humans intervene
 
-The current script is deterministic and does not call an LLM. That is intentional: it
-creates a trustworthy evidence pack first. An LLM can then help with language and
-judgement, but only inside these boundaries:
+The deterministic script should run first and create a trustworthy evidence pack. AI
+should step in after that point, using only the verified cluster, approved rule book,
+candidate changes, and playbook. Its role is language and bounded judgement, not evidence
+discovery. AI can:
 
 - summarize the verified cluster;
 - explain observed systems, regions, dates, symptoms, and severity;
@@ -152,10 +153,24 @@ judgement, but only inside these boundaries:
 - select a solution from an approved playbook for a known category;
 - state when evidence is insufficient.
 
-The LLM must not use external knowledge, invent ticket or change IDs, name systems or
-regions absent from the evidence, or create a solution for an unknown category. A later
-output validator should check every ticket ID, change ID, system, region, date, quote, and
-cause against the evidence pack. Invalid output is suppressed and routed to a human.
+AI must not use external knowledge, invent ticket or change IDs, name systems or regions
+absent from the evidence, or create a solution for an unknown category. An output
+validator should check every ticket ID, change ID, system, region, date, quote, and cause
+against the evidence pack. Invalid output is suppressed and routed to a human.
+
+Human experts step in when:
+
+- the state is `UNKNOWN` or confidence is below the automation threshold;
+- the state is `KNOWN-VARIANT` and the behavior differs from the approved playbook;
+- no change passes the system, region, timing, and text evidence checks;
+- AI output contains an unverified entity or unsupported claim;
+- the candidate root cause needs operational confirmation before action; or
+- a new category, cause, exclusion, or playbook should be added to the rule book.
+
+The human reviews the evidence pack, checks trusted operational sources, confirms or
+rejects the root-cause candidate, decides the action, and approves any rule-book update.
+This creates a human-in-the-loop workflow: deterministic code finds the supported facts,
+AI explains them, and a human owns uncertain or high-impact decisions.
 
 ## 8. Test data and results
 

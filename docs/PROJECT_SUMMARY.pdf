@@ -162,7 +162,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
 endobj
 9 0 obj
-<< /Length 3386 >>
+<< /Length 3974 >>
 stream
 BT
 /F1 8.5 Tf
@@ -200,12 +200,15 @@ BT
 /F1 8.5 Tf (For UNKNOWN, the output sets causeclaimallowed to false, sets the root-cause) Tj 0 -11 Td
 /F1 8.5 Tf (status to withheldunknown, and leaves changeid as null.) Tj 0 -11 Td
 0 -8 Td
-/F1 13 Tf (7. Where AI steps in) Tj 0 -11 Td
+/F1 13 Tf (7. Where AI steps in and where humans intervene) Tj 0 -11 Td
 0 -8 Td
-/F1 8.5 Tf (The current script is deterministic and does not call an LLM. That is intentional:) Tj 0 -11 Td
-/F1 8.5 Tf (it) Tj 0 -11 Td
-/F1 8.5 Tf (creates a trustworthy evidence pack first. An LLM can then help with language and) Tj 0 -11 Td
-/F1 8.5 Tf (judgement, but only inside these boundaries:) Tj 0 -11 Td
+/F1 8.5 Tf (The deterministic script should run first and create a trustworthy evidence pack.) Tj 0 -11 Td
+/F1 8.5 Tf (AI) Tj 0 -11 Td
+/F1 8.5 Tf (should step in after that point, using only the verified cluster, approved rule) Tj 0 -11 Td
+/F1 8.5 Tf (book,) Tj 0 -11 Td
+/F1 8.5 Tf (candidate changes, and playbook. Its role is language and bounded judgement, not) Tj 0 -11 Td
+/F1 8.5 Tf (evidence) Tj 0 -11 Td
+/F1 8.5 Tf (discovery. AI can:) Tj 0 -11 Td
 0 -8 Td
 /F1 8.5 Tf (- summarize the verified cluster;) Tj 0 -11 Td
 /F1 8.5 Tf (- explain observed systems, regions, dates, symptoms, and severity;) Tj 0 -11 Td
@@ -213,14 +216,41 @@ BT
 /F1 8.5 Tf (- select a solution from an approved playbook for a known category;) Tj 0 -11 Td
 /F1 8.5 Tf (- state when evidence is insufficient.) Tj 0 -11 Td
 0 -8 Td
-/F1 8.5 Tf (The LLM must not use external knowledge, invent ticket or change IDs, name systems) Tj 0 -11 Td
+/F1 8.5 Tf (AI must not use external knowledge, invent ticket or change IDs, name systems or) Tj 0 -11 Td
+/F1 8.5 Tf (regions) Tj 0 -11 Td
+/F1 8.5 Tf (absent from the evidence, or create a solution for an unknown category. An output) Tj 0 -11 Td
+/F1 8.5 Tf (validator should check every ticket ID, change ID, system, region, date, quote,) Tj 0 -11 Td
+/F1 8.5 Tf (and cause) Tj 0 -11 Td
+/F1 8.5 Tf (against the evidence pack. Invalid output is suppressed and routed to a human.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (Human experts step in when:) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (- the state is UNKNOWN or confidence is below the automation threshold;) Tj 0 -11 Td
+/F1 8.5 Tf (- the state is KNOWN-VARIANT and the behavior differs from the approved playbook;) Tj 0 -11 Td
+/F1 8.5 Tf (- no change passes the system, region, timing, and text evidence checks;) Tj 0 -11 Td
+/F1 8.5 Tf (- AI output contains an unverified entity or unsupported claim;) Tj 0 -11 Td
+/F1 8.5 Tf (- the candidate root cause needs operational confirmation before action; or) Tj 0 -11 Td
+/F1 8.5 Tf (- a new category, cause, exclusion, or playbook should be added to the rule book.) Tj 0 -11 Td
+0 -8 Td
+/F1 8.5 Tf (The human reviews the evidence pack, checks trusted operational sources, confirms) Tj 0 -11 Td
 /F1 8.5 Tf (or) Tj 0 -11 Td
-/F1 8.5 Tf (regions absent from the evidence, or create a solution for an unknown category. A) Tj 0 -11 Td
-/F1 8.5 Tf (later) Tj 0 -11 Td
-/F1 8.5 Tf (output validator should check every ticket ID, change ID, system, region, date,) Tj 0 -11 Td
-/F1 8.5 Tf (quote, and) Tj 0 -11 Td
-/F1 8.5 Tf (cause against the evidence pack. Invalid output is suppressed and routed to a) Tj 0 -11 Td
-/F1 8.5 Tf (human.) Tj 0 -11 Td
+/F1 8.5 Tf (rejects the root-cause candidate, decides the action, and approves any rule-book) Tj 0 -11 Td
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 11 0 R >>
+endobj
+11 0 obj
+<< /Length 3509 >>
+stream
+BT
+/F1 8.5 Tf
+50 750 Td
+/F1 8.5 Tf (update.) Tj 0 -11 Td
+/F1 8.5 Tf (This creates a human-in-the-loop workflow: deterministic code finds the supported) Tj 0 -11 Td
+/F1 8.5 Tf (facts,) Tj 0 -11 Td
+/F1 8.5 Tf (AI explains them, and a human owns uncertain or high-impact decisions.) Tj 0 -11 Td
 0 -8 Td
 /F1 13 Tf (8. Test data and results) Tj 0 -11 Td
 0 -8 Td
@@ -233,18 +263,6 @@ BT
 0 -8 Td
 0 -8 Td
 /F1 8.5 Tf (The latest suite result is:) Tj 0 -11 Td
-ET
-endstream
-endobj
-10 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 11 0 R >>
-endobj
-11 0 obj
-<< /Length 2803 >>
-stream
-BT
-/F1 8.5 Tf
-50 750 Td
 0 -8 Td
 0 -8 Td
 /F1 8 Tf (Ran 10 tests) Tj 0 -11 Td
@@ -308,10 +326,10 @@ xref
 0000003592 00000 n 
 0000007343 00000 n 
 0000007469 00000 n 
-0000010907 00000 n 
-0000011035 00000 n 
+0000011495 00000 n 
+0000011623 00000 n 
 trailer
 << /Size 12 /Root 1 0 R >>
 startxref
-13891
+15185
 %%EOF
