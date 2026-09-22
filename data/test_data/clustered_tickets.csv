@@ -1,0 +1,11 @@
+incident_id,title,description,system,region,created_at,_gt_theme,predicted_cluster,cluster_score,system_match,keyword_match,title_match,description_match,change_match,region_match,matched_concept_count,matched_concepts,related_change_id,change_days_before,runner_up_cluster,runner_up_score
+INC-0001,Biometric login broken,Face ID stopped working after the app update,MobileApp,CH,2026-09-16,mobile_login_failure_v42,mobile_login_failure_v42,15,1,1,1,1,1,0,3,biometric|login|update,CHG-0042,2,branch_hardware,0
+INC-0002,Password reset failed,Customer cannot reset their password,eBanking,CH,2026-09-16,password_reset,password_reset,12,1,1,1,1,0,0,2,password|reset,,,branch_hardware,5
+INC-0003,Passport upload rejected,Passport document upload was rejected during validation,Onboarding,CH,2026-09-17,onboarding_upload,onboarding_upload,12,1,1,1,1,0,0,3,document|upload|validation,,,card_blocked_abroad,7
+INC-0004,Statement PDF unavailable,Customer cannot download their account statement,eBanking,CH,2026-09-17,statement_download,statement_download,12,1,1,1,1,0,0,3,download|statement|unavailable,,,branch_hardware,5
+INC-0005,Reports are slow,Month-end reports are timing out in the reporting queue,Reporting,CH,2026-09-18,reporting_slow_month_end,reporting_slow_month_end,15,1,1,1,1,1,0,3,month_end|performance|reporting,CHG-0043,3,branch_hardware,0
+INC-0006,Branch printer offline,The printer at the branch workstation is offline,eBanking,CH,2026-09-18,branch_hardware,branch_hardware,12,1,1,1,1,0,0,3,branch|hardware|offline,,,password_reset,5
+INC-0007,Card declined abroad,Customer card was blocked while travelling overseas,CardServices,CH,2026-09-18,card_blocked_abroad,card_blocked_abroad,12,1,1,1,1,0,0,3,abroad|blocked|card,,,branch_hardware,0
+INC-0008,Payment limit issue,Customer cannot increase the payment limit,Payments,CH,2026-09-19,payment_limits,payment_limits,15,1,1,1,1,1,0,1,limit,CHG-0044,1,iban_validation_vendor_regression,8
+INC-0009,IBAN rejected,Austrian beneficiary account is rejected during validation,Payments,CH,2026-09-19,iban_validation_vendor_regression,iban_validation_vendor_regression,15,1,1,1,1,1,0,2,iban|validation,CHG-0044,1,payment_limits,13
+INC-0010,Something is wrong,Customer reports an issue with an unknown service,Unknown,CH,2026-09-19,singleton,singleton,0,0,0,0,0,0,0,0,,,,card_blocked_abroad,0
